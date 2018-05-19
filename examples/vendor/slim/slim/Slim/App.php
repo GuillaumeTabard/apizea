@@ -376,7 +376,7 @@ class App
                 }
             }
 
-            if (!$allowOrigin) header(sprintf("%s : %s", "Access-Control-Allow-Origin","*"));
+            if (!$allowOrigin) header(sprintf("%s: %s", "Access-Control-Allow-Origin","*"));
         }
 
         // Body
