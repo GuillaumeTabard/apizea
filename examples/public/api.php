@@ -207,7 +207,7 @@ $app->post(
     function (ServerRequestInterface $request, ResponseInterface $response) use ($app) {
 
         $response = $response->withHeader("Content-type","application/json");
-        $clientRepo = new ClientRepository();
+        $testRepo = new EditorialRepository();
 
         try{
             $_DELETE = [];
@@ -229,7 +229,7 @@ $app->post(
             return $response->withStatus($e->getCode());
         }
 
-        $clientRepo->deleteTestimony($id);
+        $testRepo->deleteTestimony($id);
 
         $toEcho = ["status" => "success", "msg" => "This testimony is now deleted"];
 
@@ -466,7 +466,7 @@ $app->post(
                 $latitude = htmlspecialchars($_POST['latitude']);
                 $annee = htmlspecialchars($_POST['annee']);
 
-                if ($_POST["anonym"]==true) $client["id"] = null;
+                if (!empty($_POST["anonym"])) $client["id"] = null;
 
                 $testimony = new TestimonyEntity($client["id"], $title, $description, $url, $longitude, $latitude, $annee);
                 $result = $testimonyRepo->add($testimony);
