@@ -366,7 +366,7 @@ class App
 
             // Headers
             header(sprintf('%s: %s', "Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE"));
-            header(sprintf("%s : %s", "Access-Control-Allow-Headers","Authorization, Content-Type"));
+            header(sprintf("%s: %s", "Access-Control-Allow-Headers","Authorization, Content-Type"));
             $allowOrigin = false;
 
             foreach ($response->getHeaders() as $name => $values) {
