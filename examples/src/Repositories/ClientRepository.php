@@ -71,9 +71,9 @@ class ClientRepository implements ClientRepositoryInterface
     /**
      * Insert user into the database
      */
-    public function register($username=null, $password=null, $email=null){
-        if ($username===null || $password===null || $email===null){
-            return null;
+    public function register($username=null, $password=null, $email=null, $firstname=null, $lastname=null){
+        if ($username===null || $password===null || $email===null || $firstname===null || $lastname===null){
+            return self::REGISTER_MISSING_PARAMETER;
         } else {
             $req = $this->_db->prepare("SELECT * FROM users WHERE name = :username OR email = :email");
             $req->bindParam(":username", $username);
@@ -85,10 +85,12 @@ class ClientRepository implements ClientRepositoryInterface
 
             $password = password_hash($password, PASSWORD_BCRYPT);
 
-            $req = $this->_db->prepare("INSERT INTO users (username, name, password, email) VALUES (:username, :username, :password, :email)");
+            $req = $this->_db->prepare("INSERT INTO users (username, name, password, email, firstname, lastname, role) VALUES (:username, :username, :password, :email, :firstname, :lastname, NULL)");
             $req->bindParam(":username", $username);
             $req->bindParam(":email", $email);
             $req->bindParam(":password", $password);
+            $req->bindParam(":firstname", $firstname);
+            $req->bindParam(":lastname", $lastname);
             $res = $req->execute();
 
             return ($res===true) ? self::REGISTER_SUCCESS : self::REGISTER_FAILED;
@@ -131,7 +133,7 @@ class ClientRepository implements ClientRepositoryInterface
      * Get all users to validate
      */
     public function getUsersToValidate(){
-        $req = $this->_db->query("SELECT * FROM users WHERE role = 'NULL'");
+        $req = $this->_db->query("SELECT * FROM users WHERE role IS NULL");
         return $req->fetchAll(\PDO::FETCH_ASSOC);
     }
 
@@ -179,7 +181,7 @@ class ClientRepository implements ClientRepositoryInterface
      */
     public function getClientEntity($clientIdentifier, $grantType = null, $clientSecret = null, $mustValidateSecret = true)
     {
-        $req = $this->_db->query("SELECT * FROM users");
+        $req = $this->_db->query("SELECT * FROM users WHERE role IS NOT NULL");
 
         $clients = [
             'myawesomeapp' => [

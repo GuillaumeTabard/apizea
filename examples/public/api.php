@@ -402,37 +402,6 @@ $app->post(
 );
 
 $app->post(
-    '/register',
-    function (ServerRequestInterface $request, ResponseInterface $response) use ($app) {
-        $response = $response->withHeader("Content-type","application/json");
-
-        $clientRepo = new ClientRepository();
-        
-        try{
-            if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['email']) ){
-                $username = htmlspecialchars($_POST['username']);
-                $password = htmlspecialchars($_POST['password']);
-                $email = htmlspecialchars($_POST['email']);
-
-                $client = $clientRepo->register($username, $password, $email);
-                
-                if ($client === ClientRepository::REGISTER_USER_EXISTS) throw new Exception("User already exists", 200);
-                if ($client === ClientRepository::REGISTER_FAILED) throw new Exception("Registration failed", 200);
-                if ($client === ClientRepository::REGISTER_MISSING_PARAMETER) throw new Exception("Missig one parameter 'username' or 'password' or 'email'", 400);
-                
-                $toEcho = ["status" => "success", "msg" => "Client successfuly registred"];
-                
-                $response->getBody()->write(json_encode($toEcho));
-            } else throw new Exception("Missig one parameter 'username' or 'password' or 'email'", 400);
-        } catch (Exception $e){
-            $response->getBody()->write(json_encode(["status" => $e->getCode(), "msg" => $e->getMessage()]));
-            return $response->withStatus($e->getCode());
-        }
-        return $response->withStatus(200);
-    }
-);
-
-$app->post(
     '/editorial/add',
     function (ServerRequestInterface $request, ResponseInterface $response) use ($app) {
         $response = $response->withHeader("Content-type","application/json");
