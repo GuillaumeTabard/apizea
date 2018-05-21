@@ -33,8 +33,7 @@ class EditorialRepository
 
     public function getTestimonies(){
         try{
-            $req = $this->_db->query("SELECT * FROM testimonies WHERE validated = 1");
-            $testimonies = [];
+            $req = $this->_db->query("SELECT * FROM testimonies LEFT OUTER JOIN users ON (users.id = testimonies.id_user) WHERE validated = 1");
             return $req->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\Exception $e){
             return $e->getCode();
