@@ -58,7 +58,7 @@ class EditorialRepository
     
     public function getTestimoniesToValidate(){
         try{
-            $req = $this->_db->query("SELECT * FROM testimonies WHERE validated = 0");
+            $req = $this->_db->query("SELECT title, description, username, annee, testimonies.id AS id_testimony FROM testimonies LEFT OUTER JOIN users ON (users.id = testimonies.id_user) WHERE validated = 0");
             return $req->fetchAll(\PDO::FETCH_ASSOC);
         } catch (Exception $e){
             return self::NO_TESTIMONIES_TO_VALIDATE;

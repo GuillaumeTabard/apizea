@@ -229,9 +229,9 @@ $app->post(
             return $response->withStatus($e->getCode());
         }
 
-        $testRepo->deleteTestimony($id);
-
-        $toEcho = ["status" => "success", "msg" => "This testimony is now deleted"];
+        $res = $testRepo->deleteTestimony($id);
+        if ($res===EditorialRepository::DELETE_TESTIMONY_FAILED) $toEcho = ["status" => "error", "msg" => "The testimony was not deleted"];
+        else $toEcho = ["status" => "success", "msg" => "This testimony is now deleted"];
 
         $response->getBody()->write(json_encode($toEcho));
 
@@ -456,25 +456,5 @@ $app->post(
         return $response->withStatus(200);
     }
 );
-/* 
-$app->get(
-    '/editorial',
-    function (ServerRequestInterface $request, ResponseInterface $response) use ($app) {
-        $response = $response->withHeader("Content-type","application/json");
-
-        $testimonyRepo = new EditorialRepository();
-        
-        try{
-            $testimonies = $testimonyRepo->getTestimonies();
-
-            if ($testimonies===false) throw new \Exception("", EditorialRepository::NO_TESTIMONIES);
-
-        } catch (Exception $e){
-            $response->getBody()->write(json_encode(["status" => $e->getCode(), "msg" => $e->getMessage()]));
-            return $response->withStatus($e->getCode());
-        }
-        return $response->withStatus(200);
-    }
-); */
 
 $app->run();
