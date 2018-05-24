@@ -9,9 +9,19 @@ class ComposerStaticInit9ba35892c4718573c7a807b695322185
     public static $files = array (
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
+        '74ed299072414d276bb7568fe71d5b0c' => __DIR__ . '/..' . '/tinify/tinify/lib/Tinify.php',
+        '9635627915aaea7a98d6d14d04ca5b56' => __DIR__ . '/..' . '/tinify/tinify/lib/Tinify/Exception.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'Z' => 
+        array (
+            'Zend\\Diactoros\\' => 15,
+        ),
+        'T' => 
+        array (
+            'Tinify\\' => 7,
+        ),
         'S' => 
         array (
             'Slim\\' => 5,
@@ -46,6 +56,14 @@ class ComposerStaticInit9ba35892c4718573c7a807b695322185
     );
 
     public static $prefixDirsPsr4 = array (
+        'Zend\\Diactoros\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zendframework/zend-diactoros/src',
+        ),
+        'Tinify\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tinify/tinify/lib/Tinify',
+        ),
         'Slim\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/slim/Slim',

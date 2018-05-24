@@ -8,4 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     '253c157292f75eb38082b5acb06f3f01' => $vendorDir . '/nikic/fast-route/src/functions.php',
     '5255c38a0faeba867671b61dfda6d864' => $vendorDir . '/paragonie/random_compat/lib/random.php',
+    '74ed299072414d276bb7568fe71d5b0c' => $vendorDir . '/tinify/tinify/lib/Tinify.php',
+    '9635627915aaea7a98d6d14d04ca5b56' => $vendorDir . '/tinify/tinify/lib/Tinify/Exception.php',
 );

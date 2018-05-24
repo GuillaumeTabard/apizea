@@ -1,6 +1,7 @@
 {
     "require": {
-        "slim/slim": "3.0.*"
+        "slim/slim": "3.0.*",
+        "tinify/tinify": "^1.5"
     },
     "require-dev": {
         "league/event": "^2.1",

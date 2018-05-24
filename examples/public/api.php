@@ -404,7 +404,7 @@ $app->post(
 $app->post(
     '/editorial/add',
     function (ServerRequestInterface $request, ResponseInterface $response) use ($app) {
-        $response = $response->withHeader("Content-type","application/json");
+        //$response = $response->withHeader("Content-type","application/json");
 
         $testimonyRepo = new EditorialRepository();
         $clientRepo = new ClientRepository();
@@ -422,7 +422,7 @@ $app->post(
         }
 
         try{
-            if (!empty($_POST['annee']) && !empty($_POST['username']) && !empty($_POST['description']) && !empty($_POST['url']) && !empty($_POST['title']) && !empty($_POST['longitude']) && !empty($_POST['latitude']) ){
+            if (!empty($_POST['annee']) && !empty($_POST['username']) && !empty($_POST['description']) && !empty($_POST['title']) && !empty($_POST['longitude']) && !empty($_POST['latitude']) ){
 
                 $username = htmlspecialchars($_POST['username']);
                 $client = $clientRepo->getUserByName($username);
@@ -430,7 +430,7 @@ $app->post(
 
                 $description = htmlspecialchars($_POST['description']);
                 $title = htmlspecialchars($_POST['title']);
-                $url = htmlspecialchars($_POST['url']);
+                $url = empty($_POST["url"]) ? null : "../api/oauth/examples/public/medias/".end(explode("\\",$_POST["url"]));
                 $longitude = htmlspecialchars($_POST['longitude']);
                 $latitude = htmlspecialchars($_POST['latitude']);
                 $annee = htmlspecialchars($_POST['annee']);
@@ -439,7 +439,7 @@ $app->post(
 
                 $testimony = new TestimonyEntity($client["id"], $title, $description, $url, $longitude, $latitude, $annee);
                 $result = $testimonyRepo->add($testimony);
-
+                
                 if ($result===EditorialRepository::ADD_FAILED) throw new Exception("Testimony was not added", 200);
                 if ($result===EditorialRepository::ADD_MISSING_PARAMETER) throw new Exception("Testimony was not added", 200);
 
