@@ -36,7 +36,7 @@ class ClientRepository implements ClientRepositoryInterface
 
     public function __construct(){
         try{
-            $this->_db = new \PDO('mysql:host=localhost;dbname=oauth_test','root','');
+            $this->_db = new \PDO('mysql:host=mysql.hostinger.fr;dbname=u855233662_zea','u855233662_admin','zeaproject2018*');
         } catch (\Exception $e) {
             $this->_db = null;
         }

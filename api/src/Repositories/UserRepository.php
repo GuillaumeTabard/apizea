@@ -25,7 +25,7 @@ class UserRepository implements UserRepositoryInterface
         ClientEntityInterface $clientEntity
     ) {
 
-        $db = new \PDO('mysql:host=localhost;dbname=oauth_test','root','');
+        $db = new \PDO('mysql:host=mysql.hostinger.fr;dbname=u855233662_zea','u855233662_admin','zeaproject2018*');
 
         $req = $db->query("SELECT * FROM users");
         while ($user = $req->fetch()) {
