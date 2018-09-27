@@ -457,4 +457,56 @@ $app->post(
     }
 );
 
+$app->post(
+    '/editorial/edit',
+    function (ServerRequestInterface $request, ResponseInterface $response) use ($app) {
+        //$response = $response->withHeader("Content-type","application/json");
+
+        $testimonyRepo = new EditorialRepository();
+        $clientRepo = new ClientRepository();
+
+        try{
+            if (empty($_POST)){
+                $data = json_decode(file_get_contents("php://input"));
+                foreach ($data as $key => $value) {
+                    $_POST[$key] = $value;
+                }
+            }
+        } catch (Exception $e){
+            $response->getBody()->write(json_encode(["status" => 401, "msg" => "Missing parameter"]));
+            return $response->withStatus($e->getCode());
+        }
+
+        try{
+            if (!empty($_POST['id']) && !empty($_POST['username']) && !empty($_POST['description']) && !empty($_POST['annee']) && !empty($_POST['title']) && !empty($_POST['longitude']) && !empty($_POST['latitude']) ){
+
+                $username = htmlspecialchars($_POST['username']);
+                $client = $clientRepo->getUserByName($username);
+                if ($client == false) $client = null;
+
+                $description = htmlspecialchars($_POST['description']);
+                $title = htmlspecialchars($_POST['title']);
+                $longitude = htmlspecialchars($_POST['longitude']);
+                $latitude = htmlspecialchars($_POST['latitude']);
+                $annee = htmlspecialchars($_POST['annee']);
+
+                $testimony = new TestimonyEntity($client["id"], $title, $description, "", $longitude, $latitude, $annee);
+                $testimony->setId($_POST["id"]);
+                $result = $testimonyRepo->edit($testimony);
+
+                if ($result===EditorialRepository::EDIT_FAILED) throw new Exception("Testimony was not updated", 400);
+                if ($result===EditorialRepository::EDIT_MISSING_PARAMETER) throw new Exception("Testimony was not updated", 400);
+
+                $toEcho = ["status" => "success", "msg" => "Testimony successfuly updated"];
+                
+                $response->getBody()->write(json_encode($toEcho));
+            } else throw new Exception("Missig one parameter 'description' or 'title' or 'username' or 'longitude' or 'latitude' or 'date'", 400);
+        } catch (Exception $e){
+            $response->getBody()->write(json_encode(["status" => $e->getCode(), "msg" => $e->getMessage()]));
+            return $response->withStatus($e->getCode());
+        }
+        return $response->withStatus(200);
+    }
+);
+
 $app->run();

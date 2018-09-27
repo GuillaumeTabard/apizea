@@ -15,6 +15,8 @@ class TestimonyEntity
     public $latitude;
     public $annee;
 
+    private $_id;
+
     public function __construct($id_user, $title, $description, $url, $longitude, $latitude, $annee){
         $this->title = $title;
         $this->description = $description;
@@ -23,6 +25,14 @@ class TestimonyEntity
         $this->longitude = $longitude;
         $this->latitude = $latitude;
         $this->annee = $annee;
+    }
+
+    public function setId($id){
+        $this->_id = $id;
+    }
+
+    public function getId(){
+        return $this->_id;
     }
 
     public function getAnnee(){

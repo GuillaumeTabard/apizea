@@ -6,6 +6,7 @@
 namespace OAuth2ServerExamples\Repositories;
 
 use OAuth2ServerExamples\Entities\TestimonyEntity;
+use OAuth2ServerExamples\Properties\Configuration;
 
 class EditorialRepository
 {
@@ -20,12 +21,16 @@ class EditorialRepository
 
     const DELETE_TESTIMONY_SUCCESS = 0;
     const DELETE_TESTIMONY_FAILED = 1;
-    
+
+    const EDIT_SUCCESS = 0;
+    const EDIT_FAILED = 1;
+    const EDIT_MISSING_PARAMETER = 2;
+
     private $_db;
 
     public function __construct(){
         try{
-            $this->_db = new \PDO('mysql:host=mysql.hostinger.fr;dbname=u855233662_zea','u855233662_admin','zeaproject2018*');
+            $this->_db = new \PDO('mysql:host='.Configuration::DATABASE_HOST.';dbname='.Configuration::DATABASE_NAME, Configuration::DATABASE_USER, Configuration::DATABASE_PASSWORD);
         } catch (\Exception $e) {
             $this->_db = null;
         }
@@ -88,6 +93,36 @@ class EditorialRepository
             $res = $req->execute();
 
             return ($res===true) ? self::ADD_SUCCESS : self::ADD_FAILED;
+
+        } catch (\Exception $e){
+            return $e->getCode();
+        }
+    }
+
+    public function edit(TestimonyEntity $testimony=null){
+        try{
+            if ($testimony === null) throw new Exception("Missing parameter 'testimony'", self::EDIT_MISSING_PARAMETER);
+
+            $description = $testimony->getDescription();
+            $title = $testimony->getTitle();
+            $id_user = $testimony->getUser();
+            $long = $testimony->getLongitude();
+            $lat = $testimony->getLatitude();
+            $annee = $testimony->getAnnee();
+            $id = $testimony->getId();
+
+            $req = $this->_db->prepare("UPDATE testimonies SET id_user = :id_user, title = :title, description = :description, longitude = :longitude, latitude = :latitude, annee = :annee WHERE id = :id");
+            $req->bindParam(":description", $description);
+            $req->bindParam(":title", $title);
+            $req->bindParam(":id_user", $id_user);
+            $req->bindParam(":longitude", $long);
+            $req->bindParam(":latitude", $lat);
+            $req->bindParam(":annee", $annee);
+            $req->bindParam(":id", $id);
+ 
+            $res = $req->execute();
+
+            return ($res===true) ? self::EDIT_SUCCESS : self::EDIT_FAILED;
 
         } catch (\Exception $e){
             return $e->getCode();

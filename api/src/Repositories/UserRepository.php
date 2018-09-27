@@ -12,6 +12,7 @@ namespace OAuth2ServerExamples\Repositories;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use OAuth2ServerExamples\Entities\UserEntity;
+use OAuth2ServerExamples\Properties\Configuration;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -24,8 +25,7 @@ class UserRepository implements UserRepositoryInterface
         $grantType,
         ClientEntityInterface $clientEntity
     ) {
-
-        $db = new \PDO('mysql:host=mysql.hostinger.fr;dbname=u855233662_zea','u855233662_admin','zeaproject2018*');
+        $db = new \PDO('mysql:host='.Configuration::DATABASE_HOST.';dbname='.Configuration::DATABASE_NAME, Configuration::DATABASE_USER, Configuration::DATABASE_PASSWORD);
 
         $req = $db->query("SELECT * FROM users");
         while ($user = $req->fetch()) {

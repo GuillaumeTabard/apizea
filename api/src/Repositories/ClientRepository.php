@@ -11,6 +11,7 @@ namespace OAuth2ServerExamples\Repositories;
 
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use OAuth2ServerExamples\Entities\ClientEntity;
+use OAuth2ServerExamples\Properties\Configuration;
 
 class ClientRepository implements ClientRepositoryInterface
 {
@@ -36,7 +37,7 @@ class ClientRepository implements ClientRepositoryInterface
 
     public function __construct(){
         try{
-            $this->_db = new \PDO('mysql:host=mysql.hostinger.fr;dbname=u855233662_zea','u855233662_admin','zeaproject2018*');
+            $this->_db = new \PDO('mysql:host='.Configuration::DATABASE_HOST.';dbname='.Configuration::DATABASE_NAME, Configuration::DATABASE_USER, Configuration::DATABASE_PASSWORD);
         } catch (\Exception $e) {
             $this->_db = null;
         }
