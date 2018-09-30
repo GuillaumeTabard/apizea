@@ -2,7 +2,7 @@
 
     namespace OAuth2ServerExamples\Properties;
 
-    $prod = false;
+    $prod = true;
 
     $env = $prod ? "prod" : "dev";
 
